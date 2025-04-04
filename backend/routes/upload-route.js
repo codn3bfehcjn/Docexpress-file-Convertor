@@ -38,7 +38,7 @@ async function extractfirstpage(files) {
             // save the first-page image
             if (outputimages.length > 0) {
                 const firstpageimage = outputimages[0]; 
-                const imagepath = `file-storage/${file.filename.split('.')[0]}.png`;only
+                const imagepath = `file-storage/${file.filename.split('.')[0]}.png`;
                 await fs.promises.writeFile(imagepath, firstpageimage.content); 
 
                 extractedimages.push({

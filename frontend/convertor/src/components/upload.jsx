@@ -7,15 +7,17 @@ export default function Upload() {
   const location = useLocation(); // Get data from navigation (state)
   const { mainheading, description } = location.state;
 
-  const [file, setFile] = useState(null); 
-  const [drag, setDrag] = useState(false); 
-  const [imgpath, setImgPath] = useState([]); 
+  const [file, setFile] = useState(null);
+  const [drag, setDrag] = useState(false);
+  const [imgpath, setImgPath] = useState([]);
   const [proroute, setproroute] = useState("");
+  const [count, setcount] = useState(0);
 
   // Catch files from input field
   function catchTheFile(event) {
     const filesArray = Array.from(event.target.files);
     setFile(filesArray);
+    setcount(event.target.files.length);
   }
 
   function dropHandler(event) {
@@ -55,7 +57,7 @@ export default function Upload() {
         return;
       }
       setproroute(response.data.ProcessRoute);
-      let element = response.data.imagePath.map((img) => img.imagepath); 
+      let element = response.data.imagePath.map((img) => img.imagepath);
       if (element.length > 0) {
         setImgPath(element);
       } else {
@@ -76,14 +78,13 @@ export default function Upload() {
   useEffect(() => {
     if (imgpath.length > 0) {
       navigate("/preview", {
-        state: { imgpath, proroute },
+        state: { imgpath, proroute,count},
       });
     }
-  }, [imgpath]); 
+  }, [imgpath]);
 
   return (
     <div className="text-gray-800 dark:text-white flex flex-col items-center justify-center px-6 font-bold font-[Oswald] transition-all mt-7">
-     
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold">
           {mainheading}
@@ -93,7 +94,6 @@ export default function Upload() {
         </p>
       </div>
 
-    
       <div
         className={`mt-10 w-60 md:w-72 p-6 rounded-xl text-center font-[Oswald] font-bold text-xl shadow-md ${
           drag ? "bg-gray-200" : "bg-red-600 shadow-md"
@@ -120,7 +120,7 @@ export default function Upload() {
           type="file"
           id="file"
           className="hidden"
-          accept=".pdf" 
+          accept=".pdf"
           onChange={catchTheFile}
           multiple
         />
