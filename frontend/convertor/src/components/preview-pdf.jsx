@@ -33,7 +33,6 @@ export default function Preview() {
             {path ? (
               <img
                 src={`http://localhost:3000/${path}`}
-                alt={`Uploaded file preview ${index + 1}`}
                 width={190}
                 height={170}
                 className="rounded-md"
