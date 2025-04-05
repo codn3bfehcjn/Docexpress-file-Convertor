@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="bg-gray-50 dark:bg-linear-to-t from-gray-500 to-gray-700 min-h-screen">
+        <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
           <Navbar />
           <Routes>
             <Route
@@ -65,7 +65,7 @@ function App() {
               }
             />
             <Route path="/upload" element={<UploadPage />} />
-            <Route path="/preview" element={<Preview />}></Route>
+            <Route path="/preview" element={<Preview />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -2,42 +2,50 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 export default function Preview() {
-  let loc = useLocation();
+  const loc = useLocation();
   const { imgpath, proroute, count } = loc.state || {};
 
   return (
-    <>
-      <div className="flex justify-center min-h-16 mt-16 gap-3 m-3">
+    <main className="flex flex-col items-center mt-10 px-4 md:px-8 lg:px-16">
+      <div className="flex flex-wrap gap-4 items-center justify-center mb-6">
+        <label
+          htmlFor="add"
+          className="w-44 flex justify-center items-center gap-2 bg-gradient-to-r from-gray-400 to-gray-500 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px] text-white hover:scale-105 transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
+        >
+          <span>Add More Files</span>
+          <p>({count})</p>
+          <input type="file" id="add" className="hidden" accept=".pdf" />
+        </label>
+
+        <button
+          className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105"
+        >
+          {proroute}
+        </button>
+      </div>
+
+      <section
+        className="flex justify-center gap-3 flex-wrap"
+        aria-label="Uploaded PDF previews"
+      >
         {imgpath.map((path, index) => (
-          <div
-            key={index}
-            className=" p-2 rounded-xl bg-white shadow-lg dark:shadow-md"
-          >
+          <figure key={index} className="p-2 rounded-xl bg-white shadow-2xl">
             {path ? (
               <img
                 src={`http://localhost:3000/${path}`}
-                alt="Uploaded Preview"
+                alt={`Uploaded file preview ${index + 1}`}
                 width={190}
                 height={170}
+                className="rounded-md"
               />
             ) : (
-              <p>No image found.</p>
+              <figcaption className="text-center text-gray-500">
+                No image found.
+              </figcaption>
             )}
-          </div>
+          </figure>
         ))}
-        <div className=" relative flex flex-col items-center justify-center w-8 h-8 bg-red-600 rounded-full group hover:bg-red-700 transition duration-300 cursor-pointer">
-          <label htmlFor="add">
-            <p className="absolute left-6 bg-red-600 rounded-full bottom-5 w-5 text-center text-white font-bold">{count}</p>
-            <input type="file" name="" id="add" className="hidden" />
-            <span className="material-symbols-outlined text-white cursor-pointer mt-1">
-              add_circle
-            </span>
-            <span className="absolute left-[51px] bg-gray-600 text-white text-lg rounded-md opacity-0 group-hover:opacity-100 transition duration-300 w-28 p-2 text-center font-[Oswald] ">
-              Add More Files
-            </span>
-          </label>
-        </div>
-      </div>
-    </>
+      </section>
+    </main>
   );
 }

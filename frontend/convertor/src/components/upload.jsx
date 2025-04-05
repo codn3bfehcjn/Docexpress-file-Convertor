@@ -1,5 +1,4 @@
 import axios from "axios";
-import Loader from "./loader";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -78,7 +77,7 @@ export default function Upload() {
   useEffect(() => {
     if (imgpath.length > 0) {
       navigate("/preview", {
-        state: { imgpath, proroute,count},
+        state: { imgpath, proroute, count },
       });
     }
   }, [imgpath]);
