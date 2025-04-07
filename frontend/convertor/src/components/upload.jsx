@@ -1,6 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { sendFileToBackend } from "../utils/sendfiletobackend";
+import { catchfile } from "../utils/catchfile";
 
 export default function Upload() {
   const location = useLocation(); // Get data from navigation (state)
@@ -14,9 +15,8 @@ export default function Upload() {
 
   // catch files from input field
   function catchTheFile(event) {
-    const filesArray = Array.from(event.target.files);
+    const [filesArray] = catchfile(event.target.files);
     setFile(filesArray);
-    setcount(event.target.files.length);
   }
 
   function dropHandler(event) {
@@ -35,41 +35,21 @@ export default function Upload() {
     setDrag(false);
   }
 
-  // Send files to backend
-  async function sendFileToBackend() {
-    if (!file || file.length === 0) {
-      alert("Please select a file.");
-      return;
-    }
-
-    const data = new FormData();
-    file.forEach((f) => data.append("files", f));
-    data.append("ProcessRoute", mainheading);
-
-    try {
-      const response = await axios.post("http://127.0.0.1:3000/upload", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      if (!response.data.imagePath || !Array.isArray(response.data.imagePath)) {
-        console.log("No valid image paths received", response.data);
-        return;
-      }
-      setproroute(response.data.ProcessRoute);
-      let element = response.data.imagePath.map((img) => img.imagepath);
-      if (element.length > 0) {
-        setImgPath(element);
-      } else {
-        console.log("No image paths received.");
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error.message);
-    }
-  }
-
   useEffect(() => {
+    async function uploadFiles() {
+      const { imgpath, proroute, count } = await sendFileToBackend(
+        file,
+        mainheading
+      );
+      if (imgpath.length > 0) {
+        setImgPath(imgpath);
+        setproroute(proroute);
+        setcount(count);
+      }
+    }
+
     if (file && file.length > 0) {
-      sendFileToBackend();
+      uploadFiles();
     }
   }, [file]);
 
