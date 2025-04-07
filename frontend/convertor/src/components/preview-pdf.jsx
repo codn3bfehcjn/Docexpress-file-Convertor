@@ -1,10 +1,14 @@
 import React from "react";
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 
 export default function Preview() {
   const loc = useLocation();
   const { imgpath, proroute, count } = loc.state || {};
 
+  function addmorefiles(){
+   
+  }
   return (
     <main className="flex flex-col items-center mt-10 px-4 md:px-8 lg:px-16">
       <div className="flex flex-wrap gap-4 items-center justify-center mb-6">
@@ -18,7 +22,8 @@ export default function Preview() {
         </label>
 
         <button
-          className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105"
+          onClick={addmorefiles}
+          className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105 cursor-pointer"
         >
           {proroute}
         </button>
@@ -29,7 +34,7 @@ export default function Preview() {
         aria-label="Uploaded PDF previews"
       >
         {imgpath.map((path, index) => (
-          <figure key={index} className="p-2 rounded-xl bg-white shadow-2xl">
+          <figure key={index} className="p-3 rounded-xl bg-white shadow-xl">
             {path ? (
               <img
                 src={`http://localhost:3000/${path}`}

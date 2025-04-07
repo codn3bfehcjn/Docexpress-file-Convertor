@@ -12,7 +12,7 @@ export default function Upload() {
   const [proroute, setproroute] = useState("");
   const [count, setcount] = useState(0);
 
-  // Catch files from input field
+  // catch files from input field
   function catchTheFile(event) {
     const filesArray = Array.from(event.target.files);
     setFile(filesArray);

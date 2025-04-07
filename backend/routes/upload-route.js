@@ -2,8 +2,10 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const { pdfToPng } = require("pdf-to-png-converter");
+const { PDFDocument } = require('pdf-lib');
 
 const router = express.Router();
+const { mergepdf } = require("../controllers-for-each-process/mergepdf");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -15,7 +17,6 @@ const storage = multer.diskStorage({
     }
 });
 
-
 const upload = multer({
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 }, //file size 10MB
@@ -26,24 +27,32 @@ async function extractfirstpage(files) {
     try {
         let extractedimages = [];
         for (const file of files) {
-            let pdfPath = file.path; // path of uploaded PDF
+            let pdfPath = file.path; // path of uploaded pdf's
+            const mergedPdfDoc = await PDFDocument.create();
+            const existingPdfBytes = await fs.promises.readFile(pdfPath);
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            const [firstpage] = await mergedPdfDoc.copyPages(pdfDoc, [0])
+            console.log(firstpage);
+            
+            mergedPdfDoc.addPage(firstpage)
+            const firstPagePdfBytes = await mergedPdfDoc.save();
 
             // convert PDF to PNG
-            const outputimages = await pdfToPng(pdfPath, {
+            const outputimages = await pdfToPng(firstPagePdfBytes, {
                 disableFontFace: false,
                 useSystemFonts: false,
-                viewportScale: 2.0, 
+                viewportScale: 1.0,
             });//returns an array
 
             // save the first-page image
             if (outputimages.length > 0) {
-                const firstpageimage = outputimages[0]; 
+                const firstpageimage = outputimages[0];
                 const imagepath = `file-storage/${file.filename.split('.')[0]}.png`;
-                await fs.promises.writeFile(imagepath, firstpageimage.content); 
+                await fs.promises.writeFile(imagepath, firstpageimage.content);
 
                 extractedimages.push({
                     pdfName: file.originalname,
-                    imagepath: imagepath, 
+                    imagepath: imagepath,
                 });
             }
         }
@@ -64,12 +73,14 @@ router.post("/upload", upload.array("files"), async (req, res) => {
         res.json({
             message: "Files uploaded successfully",
             imagePath: extractedImages,
-            ProcessRoute:ProcessRoute
+            ProcessRoute: ProcessRoute
         });
     } catch (error) {
         console.error("Upload error:", error);
         res.status(500).json({ error: "File processing failed." });
     }
 });
+
+// router.post('/merge', mergepdf)
 
 module.exports = router;
