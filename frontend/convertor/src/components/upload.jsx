@@ -2,28 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
+import { usefilestore } from "../../store/filestore";
 
 export default function Upload() {
   const location = useLocation(); // Get data from navigation (state)
   const { mainheading, description } = location.state;
-
-  const [file, setFile] = useState(null);
+  const setfile = usefilestore((state) => state.setfile);
+  const file = usefilestore((state) => state.file);
   const [drag, setDrag] = useState(false);
   const [imgpath, setImgPath] = useState([]);
   const [proroute, setproroute] = useState("");
-  const [count, setcount] = useState(0);
 
   // catch files from input field
   function catchTheFile(event) {
-    const [filesArray] = catchfile(event.target.files);
-    setFile(filesArray);
+    const filesArray = catchfile(event.target.files);
+    setfile(filesArray);
   }
 
   function dropHandler(event) {
     event.preventDefault();
     setDrag(false);
     const filesArray = Array.from(event.dataTransfer.files); //files from drag and drop
-    setFile(filesArray);
+    setfile(filesArray);
   }
 
   function dragOverHandler(event) {
@@ -37,14 +37,13 @@ export default function Upload() {
 
   useEffect(() => {
     async function uploadFiles() {
-      const { imgpath, proroute, count } = await sendFileToBackend(
+      const { imgpath, proroute } = await sendFileToBackend(
         file,
         mainheading
       );
       if (imgpath.length > 0) {
         setImgPath(imgpath);
         setproroute(proroute);
-        setcount(count);
       }
     }
 
@@ -57,7 +56,7 @@ export default function Upload() {
   useEffect(() => {
     if (imgpath.length > 0) {
       navigate("/preview", {
-        state: { imgpath, proroute, count },
+        state: { imgpath, proroute},
       });
     }
   }, [imgpath]);
@@ -65,10 +64,10 @@ export default function Upload() {
   return (
     <div className="text-gray-800 dark:text-white flex flex-col items-center justify-center px-6 font-bold font-[Oswald] transition-all mt-7">
       <div className="text-center space-y-4">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold">
+        <h1 className="text-4xl md:text-3xl lg:text-5xl font-bold">
           {mainheading}
         </h1>
-        <p className="text-lg md:text-2xl text-gray-800 dark:text-gray-100">
+        <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-100">
           {description}
         </p>
       </div>

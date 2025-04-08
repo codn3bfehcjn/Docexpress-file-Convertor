@@ -32,9 +32,9 @@ async function extractfirstpage(files) {
             const existingPdfBytes = await fs.promises.readFile(pdfPath);
             const pdfDoc = await PDFDocument.load(existingPdfBytes);
             const [firstpage] = await mergedPdfDoc.copyPages(pdfDoc, [0])
-            
+
             mergedPdfDoc.addPage(firstpage)
-            const firstPagePdfBytes = await mergedPdfDoc.save();
+            const firstPagePdfBytes = await mergedPdfDoc.save(); //uint8array
 
             // convert PDF to PNG
             const outputimages = await pdfToPng(firstPagePdfBytes, {
@@ -47,7 +47,7 @@ async function extractfirstpage(files) {
             if (outputimages.length > 0) {
                 const firstpageimage = outputimages[0];
                 const imagepath = `file-storage/${file.filename.split('.')[0]}.png`;
-                await fs.promises.writeFile(imagepath, firstpageimage.content);
+                await fs.promises.writeFile(imagepath, firstpageimage.content)
 
                 extractedimages.push({
                     pdfName: file.originalname,
