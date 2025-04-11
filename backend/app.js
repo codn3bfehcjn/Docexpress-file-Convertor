@@ -1,15 +1,21 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import router from "./routes/upload-route.js";
+
 const app = express();
 app.use(express.json());
-const cors = require("cors");
 app.use(cors());
-app.use('/file-storage', express.static('file-storage'));
 
-const router = require('./routes/upload-route');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/file-storage', express.static(path.join(__dirname, 'file-storage')));
+
+
 app.use(router);
 
-let port = 3000;
+const port = 3000;
 app.listen(port, () => {
     console.log(`server is running at http://127.0.0.1:${port}`);
-})
-
+});

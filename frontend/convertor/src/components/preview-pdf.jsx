@@ -3,20 +3,45 @@ import { useLocation } from "react-router-dom";
 import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
+import { usefilepathstore } from "../../store/filepathstore";
+import axios from "axios";
 
 export default function Preview() {
   const [path, setpath] = useState([]);
   const setfile = usefilestore((state) => state.setfile);
+  const filepath = usefilepathstore((state) => state.filepaths);
   const loc = useLocation();
   const { imgpath, proroute } = loc.state || {};
-  
+
   useEffect(() => setpath(imgpath), [imgpath]);
+
+  const routeMap = {
+    "Merge PDF": "merge",
+  };
+
+  let route = routeMap[proroute]; //space gets encoded as %20 in url
 
   async function addmorefiles(event) {
     const files = catchfile(event.target.files);
     setfile(files);
     const { imgpath } = await sendFileToBackend(files, proroute);
     setpath((prev) => [...prev, ...imgpath]);
+  }
+
+  async function process() {
+    try {
+      console.log(filepath);
+
+      const data = await axios.post(
+        `http://127.0.0.1:3000/${route}`,
+        {
+          filepath,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   return (
     <main className="flex flex-col items-center mt-10 px-4 md:px-8 lg:px-16">
@@ -37,7 +62,10 @@ export default function Preview() {
           />
         </label>
 
-        <button className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105 cursor-pointer">
+        <button
+          onClick={process}
+          className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105 cursor-pointer"
+        >
           {proroute}
         </button>
       </div>

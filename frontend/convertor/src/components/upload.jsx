@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
+import { usefilepathstore } from "../../store/filepathstore";
 
 export default function Upload() {
-  const location = useLocation(); // Get data from navigation (state)
+  const location = useLocation(); 
   const { mainheading, description } = location.state;
   const setfile = usefilestore((state) => state.setfile);
   const file = usefilestore((state) => state.file);
+  const setfilepath = usefilepathstore((state) => state.setfilepath);
   const [drag, setDrag] = useState(false);
   const [imgpath, setImgPath] = useState([]);
   const [proroute, setproroute] = useState("");
@@ -31,19 +33,20 @@ export default function Upload() {
     setDrag(true);
   }
 
-  function handleDragLeave(event) {
+  function handleDragLeave() {
     setDrag(false);
   }
 
   useEffect(() => {
     async function uploadFiles() {
-      const { imgpath, proroute } = await sendFileToBackend(
+      const { imgpath, proroute, filepath } = await sendFileToBackend(
         file,
         mainheading
       );
       if (imgpath.length > 0) {
         setImgPath(imgpath);
         setproroute(proroute);
+        setfilepath(filepath);
       }
     }
 
@@ -56,7 +59,7 @@ export default function Upload() {
   useEffect(() => {
     if (imgpath.length > 0) {
       navigate("/preview", {
-        state: { imgpath, proroute},
+        state: { imgpath, proroute },
       });
     }
   }, [imgpath]);
