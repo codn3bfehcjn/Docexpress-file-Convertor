@@ -43,7 +43,7 @@ async function extractfirstpage(files) {
 
       if (outputimages.length > 0) {
         const firstpageimage = outputimages[0];
-        const imagepath = `file-storage/${file.filename.split(".")[0]}.png`;
+        const imagepath = `file-storage/${file.filename.split(".")[0]}.jpeg`;
         await fs.writeFile(imagepath, firstpageimage.content);
 
         extractedimages.push({
@@ -81,5 +81,6 @@ router.post("/upload", upload.array("files"), async (req, res) => {
 });
 
 router.post("/merge", mergepdf);
+// router.post("/", compresspdf);
 
 export default router;

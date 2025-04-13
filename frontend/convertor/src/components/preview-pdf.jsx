@@ -4,12 +4,14 @@ import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
+import { SquareScissors } from "lucide-react";
 import axios from "axios";
 
 export default function Preview() {
   const [path, setpath] = useState([]);
   const setfile = usefilestore((state) => state.setfile);
   const filepath = usefilepathstore((state) => state.filepaths);
+  const setfilepath = usefilepathstore((state) => state.setfilepath);
   const loc = useLocation();
   const { imgpath, proroute } = loc.state || {};
 
@@ -17,6 +19,8 @@ export default function Preview() {
 
   const routeMap = {
     "Merge PDF": "merge",
+    "Compress PDF": "compress",
+    Watermark: "watermark",
   };
 
   let route = routeMap[proroute]; //space gets encoded as %20 in url
@@ -24,7 +28,8 @@ export default function Preview() {
   async function addmorefiles(event) {
     const files = catchfile(event.target.files);
     setfile(files);
-    const { imgpath } = await sendFileToBackend(files, proroute);
+    const { imgpath, filepath } = await sendFileToBackend(files, proroute);
+    setfilepath((prev) => [...prev, ...filepath]);
     setpath((prev) => [...prev, ...imgpath]);
   }
 
@@ -39,6 +44,7 @@ export default function Preview() {
         },
         { headers: { "Content-Type": "application/json" } }
       );
+      console.log(usefilepathstore.getState().filepaths);
     } catch (error) {
       console.log(error.message);
     }
@@ -71,9 +77,13 @@ export default function Preview() {
       </div>
 
       <section
-        className="flex justify-center gap-3 flex-wrap"
+        className="flex justify-center gap-3 flex-wrap "
         aria-label="Uploaded PDF previews"
       >
+        <div className="">
+          <SquareScissors color="white" className="" />
+        </div>
+
         {path.map((path, index) => (
           <figure key={index} className="p-3 rounded-xl bg-white shadow-xl">
             {path ? (

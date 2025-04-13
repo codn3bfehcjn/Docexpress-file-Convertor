@@ -6,7 +6,7 @@ import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
 
 export default function Upload() {
-  const location = useLocation(); 
+  const location = useLocation();
   const { mainheading, description } = location.state;
   const setfile = usefilestore((state) => state.setfile);
   const file = usefilestore((state) => state.file);
@@ -43,7 +43,7 @@ export default function Upload() {
         file,
         mainheading
       );
-      if (imgpath.length > 0) {
+      if (imgpath.length > 0 && filepath.length > 0) {
         setImgPath(imgpath);
         setproroute(proroute);
         setfilepath(filepath);
@@ -62,6 +62,7 @@ export default function Upload() {
         state: { imgpath, proroute },
       });
     }
+    setfile([]);
   }, [imgpath]);
 
   return (
