@@ -17,13 +17,12 @@ export async function sendFileToBackend(file, mainheading) {
 
     if (!response.data.imagePath || !Array.isArray(response.data.imagePath)) {
       console.log("No valid image paths received", response.data);
-      return { imgpath: [], proroute: "",  filepath: [] };
+      return { imgpath: [], proroute: "", filepath: [] };
     }
 
     const imgpath = response.data.imagePath.map((img) => img.imagepath);//array.map
     const proroute = response.data.ProcessRoute;
     const filepath = response.data.filepath
-   
     return { imgpath, proroute, filepath };
   } catch (error) {
     console.error("Error uploading file:", error.message);

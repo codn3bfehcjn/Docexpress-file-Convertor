@@ -7,7 +7,7 @@ export default function Header() {
         Every Tool You Need To Work With PDF'S
       </h1>
       <p className="mt-4 text-xl md:text-2xl text-gray-800 dark:text-white w-[56vw] md:w-[45vw] font-[Oswald] font-bold text-wrap">
-        Convert, merge, and compress your PDFs with ease. Fast, secure, and completely free.
+        Convert, Merge, and Compress your PDFs with ease. Fast, Secure, and Completely Free.
       </p>
     </header>
   );

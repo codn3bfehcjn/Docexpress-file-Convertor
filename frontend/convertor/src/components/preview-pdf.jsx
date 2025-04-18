@@ -4,39 +4,38 @@ import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
+import { useimagepathstore } from "../../store/imgpathstore";
 import { SquareScissors } from "lucide-react";
 import axios from "axios";
 
 export default function Preview() {
-  const [path, setpath] = useState([]);
+  const setimagepath = useimagepathstore((state) => state.setimagepath);
+  const path = useimagepathstore((state) => state.paths);
   const setfile = usefilestore((state) => state.setfile);
   const filepath = usefilepathstore((state) => state.filepaths);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
   const loc = useLocation();
-  const { imgpath, proroute } = loc.state || {};
 
-  useEffect(() => setpath(imgpath), [imgpath]);
+  const { proroute } = loc.state || {};
 
-  const routeMap = {
+  const routemap = {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
-    Watermark: "watermark",
+    "Watermark": "watermark",
   };
 
-  let route = routeMap[proroute]; //space gets encoded as %20 in url
+  let route = routemap[proroute]; //space gets encoded as %20 in url
 
   async function addmorefiles(event) {
     const files = catchfile(event.target.files);
-    setfile(files);
+    setfile((prev) => [...prev, ...files]);
     const { imgpath, filepath } = await sendFileToBackend(files, proroute);
     setfilepath((prev) => [...prev, ...filepath]);
-    setpath((prev) => [...prev, ...imgpath]);
+    setimagepath((prev) => [...prev, ...imgpath]);
   }
 
   async function process() {
     try {
-      console.log(filepath);
-
       const data = await axios.post(
         `http://127.0.0.1:3000/${route}`,
         {
@@ -44,7 +43,6 @@ export default function Preview() {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log(usefilepathstore.getState().filepaths);
     } catch (error) {
       console.log(error.message);
     }
@@ -76,23 +74,33 @@ export default function Preview() {
         </button>
       </div>
 
-      <section
-        className="flex justify-center gap-3 flex-wrap "
-        aria-label="Uploaded PDF previews"
-      >
-        <div className="">
-          <SquareScissors color="white" className="" />
-        </div>
-
+      <section className="flex justify-center flex-wrap gap-2">
         {path.map((path, index) => (
-          <figure key={index} className="p-3 rounded-xl bg-white shadow-xl">
+          <figure
+            key={index}
+            className="p-3 rounded-xl bg-white shadow-xl gap-4"
+          >
             {path ? (
-              <img
-                src={`http://localhost:3000/${path}`}
-                width={190}
-                height={170}
-                className="rounded-md"
-              />
+              <span className="group">
+                <img
+                  src={`http://localhost:3000/${path}`}
+                  width={190}
+                  height={170}
+                  className="rounded-md p-4 "
+                />
+                <div className="absolute bottom-96">
+                  <span>
+                    <SquareScissors
+                      color="white"
+                      size={"23px"}
+                      className="invisible group-hover:visible bg-black rounded cursor-pointer transition"
+                    />
+                    <p className="invisible group-hover:visible text-black">
+                      delete
+                    </p>
+                  </span>
+                </div>
+              </span>
             ) : (
               <figcaption className="text-center text-gray-500">
                 No image found.

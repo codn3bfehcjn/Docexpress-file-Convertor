@@ -4,6 +4,7 @@ import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
+import { useimagepathstore } from "../../store/imgpathstore";
 
 export default function Upload() {
   const location = useLocation();
@@ -11,9 +12,16 @@ export default function Upload() {
   const setfile = usefilestore((state) => state.setfile);
   const file = usefilestore((state) => state.file);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
+  const setimagepath = useimagepathstore((state) => state.setimagepath);
+  const imgpaths = useimagepathstore((state) => state.paths);
+  const clearimagepath = useimagepathstore((state) => state.clearimagepath);
   const [drag, setDrag] = useState(false);
-  const [imgpath, setImgPath] = useState([]);
   const [proroute, setproroute] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    clearimagepath();
+  }, []);
 
   // catch files from input field
   function catchTheFile(event) {
@@ -44,26 +52,20 @@ export default function Upload() {
         mainheading
       );
       if (imgpath.length > 0 && filepath.length > 0) {
-        setImgPath(imgpath);
         setproroute(proroute);
         setfilepath(filepath);
+        setimagepath(imgpath);
       }
+      navigate("/preview", {
+        state: { proroute },
+      });
+      setfile([]);
     }
 
     if (file && file.length > 0) {
       uploadFiles();
     }
   }, [file]);
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (imgpath.length > 0) {
-      navigate("/preview", {
-        state: { imgpath, proroute },
-      });
-    }
-    setfile([]);
-  }, [imgpath]);
 
   return (
     <div className="text-gray-800 dark:text-white flex flex-col items-center justify-center px-6 font-bold font-[Oswald] transition-all mt-7">
