@@ -24,7 +24,7 @@ export async function mergepdf(req, res) {
 
         res.json({
             message: "PDFs merged successfully.",
-            mergedPdfPath: `/file-storage/merged.pdf` 
+            mergedpdfpath: `/final-output/merged.pdf` 
           });
           
     } catch (error) {

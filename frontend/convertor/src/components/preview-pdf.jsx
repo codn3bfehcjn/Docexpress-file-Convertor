@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { sendFileToBackend } from "../utils/sendfiletobackend";
 import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
@@ -14,14 +14,16 @@ export default function Preview() {
   const setfile = usefilestore((state) => state.setfile);
   const filepath = usefilepathstore((state) => state.filepaths);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
+  const [Data, setData] = useState("");
   const loc = useLocation();
+  let navigate = useNavigate();
 
   const { proroute } = loc.state || {};
 
   const routemap = {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
-    "Watermark": "watermark",
+    Watermark: "watermark",
   };
 
   let route = routemap[proroute]; //space gets encoded as %20 in url
@@ -43,6 +45,12 @@ export default function Preview() {
         },
         { headers: { "Content-Type": "application/json" } }
       );
+    let value = data.data
+    console.log(value);
+     
+      if (value!=null) {
+        navigate("/download", { state: value });
+      }
     } catch (error) {
       console.log(error.message);
     }

@@ -7,6 +7,7 @@ import Navbar from "./components/navbar";
 import Header from "./components/header";
 import UploadPage from "./components/upload";
 import Preview from "./components/preview-pdf";
+import Download from "./components/download";
 function App() {
   return (
     <>
@@ -66,6 +67,7 @@ function App() {
             />
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/preview" element={<Preview />} />
+            <Route path="/download" element={<Download />} />
           </Routes>
         </div>
       </BrowserRouter>
