@@ -15,12 +15,14 @@ export default function Upload() {
   const setimagepath = useimagepathstore((state) => state.setimagepath);
   const imgpaths = useimagepathstore((state) => state.paths);
   const clearimagepath = useimagepathstore((state) => state.clearimagepath);
+  const clearfilepath = usefilepathstore((state) => state.clearfilepath);
   const [drag, setDrag] = useState(false);
   const [proroute, setproroute] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     clearimagepath();
+    clearfilepath();
   }, []);
 
   // catch files from input field

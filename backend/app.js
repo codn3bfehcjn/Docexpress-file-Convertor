@@ -12,7 +12,17 @@ const __filename = fileURLToPath(import.meta.url);//url of current file
 const __dirname = path.dirname(__filename); //extract folder name from full path
 
 app.use('/file-storage', express.static(path.join(__dirname, 'file-storage')));
-app.use('/final-output', express.static(path.join(__dirname, 'final-output')));
+
+app.get('/download/:filename', (req, res) => {
+    const { filename } = req.params
+    const filepath = path.join(__dirname, 'final-output', filename);
+    res.download(filepath, filename, (err) => {
+        if (err) {
+            console.error('Download error:', err);
+            res.status(500).send('Could not download file.');
+        }
+    })
+})
 
 
 app.use(router);

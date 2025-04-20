@@ -45,11 +45,10 @@ export default function Preview() {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-    let value = data.data
-    console.log(value);
-     
-      if (value!=null) {
-        navigate("/download", { state: value });
+      let value = data.data;
+
+      if (value != null) {
+        navigate("/download", { state: { value } });
       }
     } catch (error) {
       console.log(error.message);
