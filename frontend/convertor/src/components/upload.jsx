@@ -13,7 +13,6 @@ export default function Upload() {
   const file = usefilestore((state) => state.file);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
   const setimagepath = useimagepathstore((state) => state.setimagepath);
-  const imgpaths = useimagepathstore((state) => state.paths);
   const clearimagepath = useimagepathstore((state) => state.clearimagepath);
   const clearfilepath = usefilepathstore((state) => state.clearfilepath);
   const [drag, setDrag] = useState(false);
@@ -81,9 +80,8 @@ export default function Upload() {
       </div>
 
       <div
-        className={`mt-10 w-60 md:w-72 p-6 rounded-xl text-center font-[Oswald] font-bold text-xl shadow-md ${
-          drag ? "bg-gray-200" : "bg-red-600 shadow-md"
-        }`}
+        className={`mt-10 w-60 md:w-72 p-6 rounded-xl text-center font-[Oswald] font-bold text-xl shadow-md ${drag ? "bg-gray-200" : "bg-red-600 shadow-md"
+          }`}
         onDrop={dropHandler}
         onDragOver={dragOverHandler}
         onDragLeave={handleDragLeave}

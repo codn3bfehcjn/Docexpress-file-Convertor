@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export async function sendFileToBackend(file, mainheading) {
   if (!file || file.length === 0) {
     alert("Please select a file.");
@@ -14,7 +13,8 @@ export async function sendFileToBackend(file, mainheading) {
     const response = await axios.post("http://127.0.0.1:3000/upload", data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-
+ console.log(response);
+ 
     if (!response.data.imagePath || !Array.isArray(response.data.imagePath)) {
       console.log("No valid image paths received", response.data);
       return { imgpath: [], proroute: "", filepath: [] };

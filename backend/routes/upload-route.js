@@ -4,6 +4,7 @@ import { promises as fs } from "fs";
 import { pdfToPng } from "pdf-to-png-converter";
 import { PDFDocument } from "pdf-lib";
 import { mergepdf } from "../controllers-for-each-process/mergepdf.js";
+import { watermark } from "../controllers-for-each-process/watermark.js";
 
 const router = Router();
 
@@ -63,6 +64,7 @@ router.post("/upload", upload.array("files"), async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: "No files uploaded." });
   }
+console.log(req.files);
 
   try {
     const filepath = req.files.map((file) => file.path);
@@ -81,6 +83,6 @@ router.post("/upload", upload.array("files"), async (req, res) => {
 });
 
 router.post("/merge", mergepdf);
-// router.post("/", compresspdf);
+router.post("/watermark",watermark );
 
 export default router;
