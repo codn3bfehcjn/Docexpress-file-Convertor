@@ -8,6 +8,7 @@ import Header from "./components/header";
 import UploadPage from "./components/upload";
 import Preview from "./components/preview-pdf";
 import Download from "./components/download";
+import Footer from "./components/footer";
 function App() {
   return (
     <>
@@ -71,6 +72,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      <Footer></Footer>
     </>
   );
 }
