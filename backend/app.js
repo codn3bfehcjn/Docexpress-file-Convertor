@@ -9,11 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 const __filename = fileURLToPath(import.meta.url);//url of current file
-console.log(__filename);
-
 const __dirname = path.dirname(__filename); //extract folder name from full path
-console.log(__dirname);
-
 
 app.use('/file-storage', express.static(path.join(__dirname, 'file-storage')));
 
