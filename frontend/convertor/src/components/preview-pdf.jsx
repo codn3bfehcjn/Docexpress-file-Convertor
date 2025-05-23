@@ -7,6 +7,7 @@ import { usefilepathstore } from "../../store/filepathstore";
 import { useimagepathstore } from "../../store/imgpathstore";
 import Fontoption from "./fontoptions";
 import { usefontstore } from "../../store/fontstore";
+import { hextorgb } from "../utils/hextorgb";
 import axios from "axios";
 
 export default function Preview() {
@@ -18,22 +19,19 @@ export default function Preview() {
   const font = usefontstore((state) => state.font)
   const [open, setopen] = useState(false);
   const [fontsize, setfontsize] = useState(12);
-  const [color, setcolor] = useState('#000000');
+  const [color, setcolor] = useState({ red: 0, green: 0, blue: 0 });
   const [watermarktext, setwatermarktext] = useState("")
   const value = useRef(12);
   const modalref = useRef(null);
   const loc = useLocation();
   let navigate = useNavigate();
 
-
   const { proroute } = loc.state || {};
-
   const routemap = {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
     "Watermark": "watermark",
   };
-
   let route = routemap[proroute]; //space gets encoded as %20 in url
 
   async function addmorefiles(event) {
@@ -54,7 +52,6 @@ export default function Preview() {
         { headers: { "Content-Type": "application/json" } }
       );
       let value = data.data;
-
       if (value != null) {
         navigate("/download", { state: { value } });
       }
@@ -72,7 +69,8 @@ export default function Preview() {
   }
 
   function colorpicker(e) {
-    setcolor(e.target.value)
+    let rgb = hextorgb(e.target.value)
+    setcolor(rgb);
   }
 
   function gettext(e) {
@@ -90,14 +88,16 @@ export default function Preview() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <main className="flex flex-col items-center mt-10 px-4 md:px-8 lg:px-16">
       <div className="flex flex-wrap gap-4 items-center justify-center mb-6">
         <label
           htmlFor="add"
-          className="w-44 flex justify-center items-center gap-2 bg-gradient-to-r from-gray-400 to-gray-500 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px]  text-black hover:scale-105 transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 "
+          className="w-44 flex justify-center items-center gap-2 bg-red-600 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px]  text-black hover:scale-105 transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 "
         >
-          <span className="text-md">Add More Files</span>
+          <span className="font-medium text-white">Add More Files</span>
+
 
           <input
             type="file"
@@ -112,68 +112,83 @@ export default function Preview() {
 
         <button
           onClick={process}
-          className="h-[46px] px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 w-44 hover:scale-105 cursor-pointer"
+          className="h-[46px] px-6 py-2 bg-red-600 text-white font-medium font-[Oswald] rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2focus:ring-red-400 w-44 hover:scale-105 cursor-pointer"
         >
           {proroute}
         </button>
       </div>
 
-      {proroute === "Watermark" ? (
-        <div className="w-full max-w-md mb-2 px-4">
+      {proroute === "Watermark" && (
+        <div className="w-full max-w-md mb-6 px-4">
           <label
-            htmlFor="watermark-text"
-            className="block text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2"
+            htmlFor="watermark"
+            className="block text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2"
           >
+            Watermark Text
           </label>
           <input
-            id="watermark-text"
+            id="watermark"
             placeholder="Enter watermark text for your PDF"
-            className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none bg-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-600 transition duration-200 font-medium resize-y"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-200 font-medium"
             onChange={gettext}
           />
-          <div className="relative inline-block group" ref={modalref}>
-            <span
+
+          <div className="relative inline-block mt-4" ref={modalref}>
+            <button
               onClick={togglesetting}
-              className="cursor-pointer flex items-center space-x-1 text-red-600 transition-colors dark:text-red-500"
+              className="flex items-center gap-1 text-red-600 dark:text-red-400 transition-colors text-base font-medium cursor-pointer"
             >
               <span className="material-symbols-outlined text-2xl">add_circle</span>
-              <span className=" text-md font-medium select-none">
-                Customize
-              </span>
-            </span>
+              <span>Customize</span>
+            </button>
 
             <div
               className={`transition-all duration-300 origin-top transform ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
-                } mt-2 absolute bg-gray-400 p-4 rounded-xl shadow-lg w-64 z-10 space-y-4`}
+                } mt-2 absolute bg-white dark:bg-gray-700 p-4 rounded-xl shadow-xl w-72 z-10 space-y-4`}
             >
               <div>
-                <h3 className="text-sm font-semibold text-black mb-1">Text Color: {color}</h3>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  Text Color (RGB):
+                  <div className="ml-1 text-xs text-gray-600 dark:text-gray-300">
+                    <span>R: {color.red}</span><br />
+                    <span>G: {color.green}</span><br />
+                    <span>B: {color.blue}</span>
+                  </div>
+                </label>
                 <input
                   type="color"
                   id="color"
-                  className="w-full h-10 cursor-pointer"
+                  className="w-full h-10 cursor-pointer rounded"
                   onChange={colorpicker}
                 />
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-black mb-1">Font Size: <span>{fontsize}</span></h3>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  Font Size: <span className="ml-1">{fontsize}</span>
+                </label>
                 <input
                   type="range"
                   id="num"
                   min="12"
                   max="48"
-                  className="w-full focus:outline-none"
+                  className="w-full"
                   ref={value}
                   onInput={changeval}
                 />
               </div>
-              <div>Font style: <Fontoption></Fontoption></div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                  Font Style:
+                </label>
+                <Fontoption />
+              </div>
             </div>
           </div>
-
         </div>
-      ) : null}
+      )}
+
 
       <section className="flex justify-center flex-wrap gap-2">
         {path.map((path, index) => (

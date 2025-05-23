@@ -69,12 +69,12 @@ export default function Upload() {
   }, [file]);
 
   return (
-    <div className="text-gray-800 dark:text-white flex flex-col items-center justify-center px-6 font-bold font-[Oswald] transition-all mt-7">
+    <div className="text-gray-800 dark:text-white flex flex-col items-center justify-center px-6 transition-all mt-7">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-3xl lg:text-5xl font-bold">
+        <h1 className="text-4xl md:text-3xl lg:text-5xl font-[Oswald] font-bold">
           {mainheading}
         </h1>
-        <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-100">
+        <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-100 font-[Oswald]  font-bold ">
           {description}
         </p>
       </div>
@@ -95,7 +95,7 @@ export default function Upload() {
               Drop your files, let the magic happen!
             </p>
           ) : (
-            <p className="text-2xl font-[Oswald] text-white transition">
+            <p className="text-2xl font-[Oswald] text-white transition font-bold ">
               Select Your Files or Drop PDF here
             </p>
           )}

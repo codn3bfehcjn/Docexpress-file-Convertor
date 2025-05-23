@@ -64,8 +64,6 @@ router.post("/upload", upload.array("files"), async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: "No files uploaded." });
   }
-console.log(req.files);
-
   try {
     const filepath = req.files.map((file) => file.path);
     const { ProcessRoute } = req.body;

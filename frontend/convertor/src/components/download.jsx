@@ -4,13 +4,14 @@ import { useLocation } from "react-router-dom";
 export default function Download() {
   const location = useLocation();
   const { value } = location.state;
-  let outputpath = value.mergedpdfpath;
+  let output = Object.values(value);//Array of values of the provided object
+  let outputpath = output[1];
   let filename = outputpath.split("/")[2];
 
   return (
     <div className="flex flex-col justify-center items-center px-4 mt-24">
       <h2 className="text-xl sm:text-3xl font-bold text-black dark:text-white font-[Oswald] mb-6 text-center">
-        🎉 We stitched it! Your merged PDF is ready to download.
+        🎉 Your PDF is ready to download.
       </h2>
 
       <div className="bg-red-600 w-full max-w-md p-6 rounded-2xl shadow-lg text-center text-white">
@@ -23,7 +24,7 @@ export default function Download() {
           href={`http://localhost:3000/download/${filename}`}
           download
         >
-          ⬇ Download Merged PDF
+          ⬇ Download PDF
         </a>
       </div>
     </div>

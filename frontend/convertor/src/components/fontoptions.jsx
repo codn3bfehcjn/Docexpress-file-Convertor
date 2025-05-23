@@ -26,7 +26,7 @@ export default function Fontoption() {
     return (
         <>
             <div>
-                <select onChange={Getfontstyle}>
+                <select onChange={Getfontstyle} className="bg-gray-300 dark:bg-gray-200 rounded-md">
                     {fonts.map((font, idx) => (
                         <option key={idx} value={font.family} style={{ fontFamily: font.name }}>
                             {font.name}
