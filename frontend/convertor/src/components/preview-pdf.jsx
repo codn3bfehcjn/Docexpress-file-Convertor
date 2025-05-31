@@ -7,7 +7,6 @@ import { usefilepathstore } from "../../store/filepathstore";
 import { useimagepathstore } from "../../store/imgpathstore";
 import Customize from "./customization";
 import { usefontstore } from "../../store/fontstore";
-import { hextorgb } from "../utils/hextorgb";
 import axios from "axios";
 
 export default function Preview() {
@@ -17,8 +16,14 @@ export default function Preview() {
   const filepath = usefilepathstore((state) => state.filepaths);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
   const font = usefontstore((state) => state.font)
+  const modalref = useRef(null);
+  const [open, setopen] = useState(false);
+  const [fontsize, setfontsize] = useState(12);
+  const [color, setcolor] = useState({ red: 0, green: 0, blue: 0 });
+  const watermarktext = useRef("")
+  const value = useRef(12);
   const loc = useLocation();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { proroute } = loc.state || {};
   const routemap = {
@@ -27,7 +32,6 @@ export default function Preview() {
     "Watermark": "watermark",
   };
   let route = routemap[proroute]; //space gets encoded as %20 in url
-
   async function addmorefiles(event) {
     const files = catchfile(event.target.files);
     setfile((prev) => [...prev, ...files]);
@@ -37,11 +41,12 @@ export default function Preview() {
   }
 
   async function process() {
+    let text = watermarktext.current
     try {
       const data = await axios.post(
         `http://127.0.0.1:3000/${route}`,
         {
-          filepath, fontsize, color, watermarktext, font
+          filepath, fontsize, color, text, font
         },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -49,6 +54,7 @@ export default function Preview() {
       if (value != null) {
         navigate("/download", { state: { value } });
       }
+      setfile([])
     } catch (error) {
       console.log(error.message);
     }
@@ -81,7 +87,7 @@ export default function Preview() {
         </button>
       </div>
 
-      <Customize proroute={proroute} />
+      <Customize proroute={proroute} setopen={setopen} open={open} fontsize={fontsize} setfontsize={setfontsize} color={color} setcolor={setcolor} modalref={modalref} value={value} watermarktext={watermarktext} />
 
       <section className="flex justify-center flex-wrap gap-2 mb-3">
         {path.map((path, index) => (

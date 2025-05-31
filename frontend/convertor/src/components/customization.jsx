@@ -1,13 +1,9 @@
-import React,{useRef,useState,useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Fontoption from "./fontoptions";
+import { hextorgb } from "../utils/hextorgb";
 
-export default function Customize({ proroute }) {
-    const modalref = useRef(null);
-    const [open, setopen] = useState(false);
-    const [fontsize, setfontsize] = useState(12);
-    const [color, setcolor] = useState({ red: 0, green: 0, blue: 0 });
-    const [watermarktext, setwatermarktext] = useState("")
-    const value = useRef(12);
+export default function Customize({ proroute,setopen,open,fontsize,setfontsize,color,setcolor,modalref,value,watermarktext }) {
+   
     function togglesetting() {
         setopen((prev) => !prev)
     }
@@ -22,7 +18,7 @@ export default function Customize({ proroute }) {
     }
 
     function gettext(e) {
-        setwatermarktext(e.target.value)
+        watermarktext.current = e.target.value
     }
 
     useEffect(() => {

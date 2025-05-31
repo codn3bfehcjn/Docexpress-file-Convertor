@@ -9,12 +9,12 @@ import { useimagepathstore } from "../../store/imgpathstore";
 export default function Upload() {
   const location = useLocation();
   const { mainheading, description } = location.state;
-  const setfile = usefilestore((state) => state.setfile);
   const file = usefilestore((state) => state.file);
+  const setfile = usefilestore((state) => state.setfile);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
+  const clearfilepath = usefilepathstore((state) => state.clearfilepath);
   const setimagepath = useimagepathstore((state) => state.setimagepath);
   const clearimagepath = useimagepathstore((state) => state.clearimagepath);
-  const clearfilepath = usefilepathstore((state) => state.clearfilepath);
   const [drag, setDrag] = useState(false);
   const [proroute, setproroute] = useState("");
   const navigate = useNavigate();
@@ -60,7 +60,6 @@ export default function Upload() {
       navigate("/preview", {
         state: { proroute },
       });
-      setfile([]);
     }
 
     if (file && file.length > 0) {
