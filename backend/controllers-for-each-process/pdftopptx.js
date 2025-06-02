@@ -36,7 +36,7 @@ export async function convertPdfToPptx(req, res) {
       if (jobStatus === 'failed') {
         throw new Error('Conversion failed on server.');
       }
-    }
+    }7
 
     const fileId = status.data.target_files[0].id;
 
