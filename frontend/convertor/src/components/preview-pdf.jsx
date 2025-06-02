@@ -30,6 +30,7 @@ export default function Preview() {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
     "Watermark": "watermark",
+    "PDF to PowerPoint":"PdftoPPT"
   };
   let route = routemap[proroute]; //space gets encoded as %20 in url
   async function addmorefiles(event) {

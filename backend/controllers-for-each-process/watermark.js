@@ -11,10 +11,10 @@ export async function watermark(req, res) {
         let read = await fs.readFile(element)
         const pdf = await PDFDocument.load(read);
 
-        pdf.registerFontkit(fontkit)
+        pdf.registerFontkit(fontkit)// custom fonts add kar rahe hai given pdf mein
         let fontbytes;
         const selectedFont = font.trim();
-        switch (selectedFont) {
+        switch (selectedFont) { //for applying fonts to the watermark text user has given
             case 'Roboto':
                 fontbytes = await fs.readFile('./fonts/Roboto-VariableFont_wdth,wght.ttf');
                 break;

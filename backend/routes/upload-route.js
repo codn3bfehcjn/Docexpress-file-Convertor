@@ -5,6 +5,7 @@ import { pdfToPng } from "pdf-to-png-converter";
 import { PDFDocument } from "pdf-lib";
 import { mergepdf } from "../controllers-for-each-process/mergepdf.js";
 import { watermark } from "../controllers-for-each-process/watermark.js";
+import { convertPdfToPptx } from "../controllers-for-each-process/pdftopptx.js";
 
 const router = Router();
 
@@ -82,5 +83,6 @@ router.post("/upload", upload.array("files"), async (req, res) => {
 
 router.post("/merge", mergepdf);
 router.post("/watermark",watermark );
+router.post("/pdftoppt",convertPdfToPptx);
 
 export default router;
