@@ -12,7 +12,7 @@ export async function convertPdfToPptx(req, res) {
   try {
     const { filepath } = req.body
     const inputfilepath = filepath[0];
-    // Step 1: Upload and create conversion job
+
     const form = new FormData();
     form.append('source_file', fs.createReadStream(inputfilepath));
     form.append('target_format', 'pptx');
@@ -23,14 +23,13 @@ export async function convertPdfToPptx(req, res) {
     });
 
     const jobId = jobResponse.data.id;
-    console.log(`✅ Job created: ${jobId}`);
+    console.log(`Job created: ${jobId}`);
 
-    // Step 2: Poll job status until complete
     let jobStatus = 'initializing';
-    let statusRes;
+    let status;
     while (jobStatus !== 'successful') {
-      await new Promise((r) => setTimeout(r, 3000)); // wait 3 seconds
-      statusRes = await axios.get(`${ZAMZAR_BASE_URL}/jobs/${jobId}`, {
+      await new Promise((r) => setTimeout(r, 3000));
+      status = await axios.get(`${ZAMZAR_BASE_URL}/jobs/${jobId}`, {
         auth: { username: API_KEY, password: '' },
       });
 
@@ -39,9 +38,8 @@ export async function convertPdfToPptx(req, res) {
       }
     }
 
-    const fileId = statusRes.data.target_files[0].id;
+    const fileId = status.data.target_files[0].id;
 
-    // Step 3: Download converted file
     const downloadStream = await axios({
       method: 'GET',
       url: `${ZAMZAR_BASE_URL}/files/${fileId}/content`,
@@ -49,16 +47,15 @@ export async function convertPdfToPptx(req, res) {
       responseType: 'stream',
     });
 
-    // Define output path inside existing final-output folder
     const outputFilePath = path.join(process.cwd(), 'final-output', 'output.pptx');
     const writer = fs.createWriteStream(outputFilePath);
     downloadStream.data.pipe(writer);
 
     res.json({
       message: "Converted PDF to PPTX succesfully.",
-      watermarkedpdf: `/final-output/output.pptx`,
+      outputppt: `/final-output/output.pptx`,
     });
   } catch (err) {
-    console.error('❌ Error:', err.response?.data || err.message);
+    console.error('Error:',err.message);
   }
 }
