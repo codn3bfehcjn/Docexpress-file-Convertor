@@ -30,7 +30,7 @@ export default function Preview() {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
     "Watermark": "watermark",
-    "PDF to PowerPoint":"PdftoPPT"
+    "PDF to PowerPoint": "PdftoPPT"
   };
   let route = routemap[proroute]; //space gets encoded as %20 in url
   async function addmorefiles(event) {
@@ -55,7 +55,6 @@ export default function Preview() {
       if (value != null) {
         navigate("/download", { state: { value } });
       }
-      setfile([])
     } catch (error) {
       console.log(error.message);
     }

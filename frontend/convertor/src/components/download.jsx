@@ -1,5 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Download() {
   const location = useLocation();
@@ -7,6 +8,30 @@ export default function Download() {
   let output = Object.values(value);//Array of values of the provided object
   let outputpath = output[1];
   let filename = outputpath.split("/")[2];
+  const navigate = useNavigate();
+
+  async function downloadFile() {
+    try {
+      const response = await axios.get(`http://localhost:3000/download/${filename}`, {
+        responseType: 'blob',
+      });
+      
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+      if (response) {
+        navigate('/')
+      }
+    } catch (error) {
+      console.error("Download failed:", error.message);
+    }
+  }
 
   return (
     <div className="flex flex-col justify-center items-center px-4 mt-24">
@@ -19,13 +44,14 @@ export default function Download() {
           Click the button below to grab your file.
         </p>
 
-        <a
-          className="inline-block bg-white text-red-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition duration-300 text-sm sm:text-base"
-          href={`http://localhost:3000/download/${filename}`}
+        <button
           download
+          onClick={downloadFile}
+          className="inline-block bg-white text-red-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition duration-300 text-sm sm:text-base"
         >
           ⬇ Download PDF
-        </a>
+        </button>
+
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
           <Navbar />
           <Routes>
             <Route
@@ -53,7 +53,7 @@ function App() {
                       fontawesomeclass={"fa-solid fa-file-export fa-xl"}
                       fontawesomeclass2={"fa-solid fa-file-powerpoint fa-xl"}
                       mainheading={"PDF to PowerPoint"}
-                      description={"Transform Your PDFs to Presentations!"}
+                      description={"Transform Your PDFs to Presentations!(Max 1MB File Size)"}
                     />
                     <Cards
                       fontawesomeclass={"fa-solid fa-shield-virus fa-xl"}

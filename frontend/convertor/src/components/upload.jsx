@@ -17,11 +17,14 @@ export default function Upload() {
   const clearimagepath = useimagepathstore((state) => state.clearimagepath);
   const [drag, setDrag] = useState(false);
   const [proroute, setproroute] = useState("");
+  const [flag, setflag] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     clearimagepath();
     clearfilepath();
+    setfile([])
+    setflag(true)
   }, []);
 
   // catch files from input field
@@ -56,12 +59,13 @@ export default function Upload() {
         setproroute(proroute);
         setfilepath(filepath);
         setimagepath(imgpath);
-      }
-      navigate("/preview", {
-        state: { proroute },
-      });
-    }
 
+        navigate("/preview", {
+          state: { proroute },
+        });
+      }
+    }
+    if (!flag) return;
     if (file && file.length > 0) {
       uploadFiles();
     }
@@ -77,17 +81,13 @@ export default function Upload() {
           {description}
         </p>
       </div>
-
-      <div
-        className={`mt-10 w-60 md:w-72 p-6 rounded-xl text-center font-[Oswald] font-bold text-xl shadow-md ${drag ? "bg-gray-200" : "bg-red-600 shadow-md"
-          }`}
-        onDrop={dropHandler}
-        onDragOver={dragOverHandler}
-        onDragLeave={handleDragLeave}
-      >
-        <label
-          htmlFor="file"
-          className="block text-center rounded-2xl cursor-pointer"
+      <label htmlFor="input" className="cursor-pointer">
+        <div
+          className={`mt-10 w-60 md:w-72 p-6 rounded-xl text-center font-[Oswald] font-bold text-xl shadow-md ${drag ? "bg-gray-200" : "bg-red-600 shadow-md"
+            }`}
+          onDrop={dropHandler}
+          onDragOver={dragOverHandler}
+          onDragLeave={handleDragLeave}
         >
           {drag ? (
             <p className="text-2xl font-[Oswald] text-black transition">
@@ -98,16 +98,16 @@ export default function Upload() {
               Select Your Files or Drop PDF here
             </p>
           )}
-        </label>
-        <input
-          type="file"
-          id="file"
-          className="hidden"
-          accept=".pdf"
-          onChange={catchTheFile}
-          multiple
-        />
-      </div>
+          <input
+            type="file"
+            id="input"
+            className="hidden"
+            accept=".pdf"
+            onChange={catchTheFile}
+            multiple
+          />
+        </div>
+      </label>
     </div>
   );
 }

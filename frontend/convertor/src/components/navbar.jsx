@@ -15,7 +15,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-gray-50 dark:text-white dark:bg-gray-800 w-full min-h-16 flex justify-between items-center px-8 font-[Oswald] transition-colors shadow-lg sticky top-0 ">
+    <nav className="bg-gray-100 dark:text-white dark:bg-gray-800 w-full min-h-16 flex justify-between items-center px-8 font-[Oswald] transition-colors shadow-lg sticky top-0 ">
       <Link to={"/"}>
         <div className="text-2xl font-extrabold cursor-pointer text-red-500">
           DOCXPRESS

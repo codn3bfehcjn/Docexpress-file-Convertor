@@ -20,8 +20,7 @@ export default function Cards({
       className="m-4 md:w-80 w-96 h-44 p-4  bg-white dark:bg-gray-800 shadow-xl
       hover:scale-105 hover:shadow-xl transition-transform duration-300 ease-in-out
       font-[Oswald] flex flex-col items-center text-center 
-      border-1 rounded-2xl border-gray-200 cursor-pointer
-      hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:shadow-gray-500 dark:hover:shadow-md"
+      border-1 rounded-2xl border-gray-200 cursor-pointer hover:border-2 hover:border-gray-200 dark:hover:bg-gray-800 dark:border-gray-600 dark:hover:shadow-gray-500 dark:hover:shadow-md dark:hover:border dark:hover:border-gray-500"
     >
       <div className="mb-3 dark:text-white">
         <i className={fontawesomeclass}></i>
