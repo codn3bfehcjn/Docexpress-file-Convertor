@@ -5,13 +5,13 @@ import { catchfile } from "../utils/catchfile";
 import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
 import { useimagepathstore } from "../../store/imgpathstore";
-import Customize from "./customization";
 import { usefontstore } from "../../store/fontstore";
+import Customize from "./customization";
+import Imagepreview from "./imagepreview";
 import axios from "axios";
 
 export default function Preview() {
   const setimagepath = useimagepathstore((state) => state.setimagepath);
-  const path = useimagepathstore((state) => state.paths);
   const setfile = usefilestore((state) => state.setfile);
   const filepath = usefilepathstore((state) => state.filepaths);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
@@ -89,29 +89,7 @@ export default function Preview() {
 
       <Customize proroute={proroute} setopen={setopen} open={open} fontsize={fontsize} setfontsize={setfontsize} color={color} setcolor={setcolor} modalref={modalref} value={value} watermarktext={watermarktext} />
 
-      <section className="flex justify-center flex-wrap gap-2 mb-3">
-        {path.map((path, index) => (
-          <figure
-            key={index}
-            className="p-1 rounded-xl bg-white shadow-xl gap-4"
-          >
-            {path ? (
-              <span className="group">
-                <img
-                  src={`http://localhost:3000/${path}`}
-                  width={190}
-                  height={170}
-                  className="rounded-md p-2"
-                />
-              </span>
-            ) : (
-              <figcaption className="text-center text-gray-500">
-                No image found.
-              </figcaption>
-            )}
-          </figure>
-        ))}
-      </section>
+      <Imagepreview></Imagepreview>
     </main>
   );
 }
