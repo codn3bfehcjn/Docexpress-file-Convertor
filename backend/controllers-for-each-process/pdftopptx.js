@@ -32,11 +32,13 @@ export async function convertPdfToPptx(req, res) {
       status = await axios.get(`${ZAMZAR_BASE_URL}/jobs/${jobId}`, {
         auth: { username: API_KEY, password: '' },
       });
-
+      jobStatus = status.data.status;
+      console.log(jobStatus);
+      
       if (jobStatus === 'failed') {
         throw new Error('Conversion failed on server.');
       }
-    }7
+    }
 
     const fileId = status.data.target_files[0].id;
 
@@ -56,6 +58,6 @@ export async function convertPdfToPptx(req, res) {
       outputppt: `/final-output/output.pptx`,
     });
   } catch (err) {
-    console.error('Error:',err.message);
+    console.error('Error:', err.message);
   }
 }
