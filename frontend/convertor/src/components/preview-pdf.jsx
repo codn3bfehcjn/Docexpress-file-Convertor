@@ -6,6 +6,7 @@ import { usefilestore } from "../../store/filestore";
 import { usefilepathstore } from "../../store/filepathstore";
 import { useimagepathstore } from "../../store/imgpathstore";
 import { usefontstore } from "../../store/fontstore";
+import { loader } from "../../store/loader";
 import Customize from "./customization";
 import Imagepreview from "./imagepreview";
 import axios from "axios";
@@ -16,6 +17,8 @@ export default function Preview() {
   const filepath = usefilepathstore((state) => state.filepaths);
   const setfilepath = usefilepathstore((state) => state.setfilepath);
   const font = usefontstore((state) => state.font)
+  const setloader = loader((state) => state.setloader);
+  const load = loader((state) => state.load);
   const modalref = useRef(null);
   const [open, setopen] = useState(false);
   const [fontsize, setfontsize] = useState(12);
@@ -42,30 +45,41 @@ export default function Preview() {
   }
 
   async function process() {
-    let text = watermarktext.current
+    let text = watermarktext.current;
     try {
+      setloader(true);
       const data = await axios.post(
         `http://127.0.0.1:3000/${route}`,
         {
-          filepath, fontsize, color, text, font
+          filepath,
+          fontsize,
+          color,
+          text,
+          font,
         },
         { headers: { "Content-Type": "application/json" } }
       );
-      let value = data.data;
-      if (value != null) {
-        navigate("/download", { state: { value } });
+
+      if (data) {
+        let value = data.data;
+        setTimeout(() => {
+          setloader(false);
+          navigate("/download", { state: { value } });
+        }, 1200);
       }
     } catch (error) {
+      setloader(false);
       console.log(error.message);
     }
   }
+
 
   return (
     <main className="flex flex-col items-center mt-10 px-4 md:px-8 lg:px-16">
       <div className="flex flex-wrap gap-4 items-center justify-center mb-6">
         <label
           htmlFor="add"
-          className="w-44 flex justify-center items-center gap-2 bg-red-600 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px]  text-black hover:scale-105 transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 "
+          className="w-44 flex justify-center items-center gap-2 bg-red-600 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px]  text-black hover:scale-105 transition duration-200 focus:outline-none"
         >
           <span className="font-medium text-white">Add More Files</span>
           <input
@@ -90,6 +104,12 @@ export default function Preview() {
       <Customize proroute={proroute} setopen={setopen} open={open} fontsize={fontsize} setfontsize={setfontsize} color={color} setcolor={setcolor} modalref={modalref} value={value} watermarktext={watermarktext} />
 
       <Imagepreview></Imagepreview>
+      {load ? (
+        <div className=" top-[65px] fixed inset-0  bg-white dark:bg-gray-800 bg-opacity-50 z-50 flex justify-center items-center text-white">
+          <p className="text-gray-700 dark:text-white font-[Oswald] text-2xl">🧰 Calling the PDF wizards for some magic..</p>
+          <div className=" w-16 h-16 border-8 border-white border-t-red-500 rounded-full animate-spin"></div>
+        </div>
+      ) : null}
     </main>
   );
 }
