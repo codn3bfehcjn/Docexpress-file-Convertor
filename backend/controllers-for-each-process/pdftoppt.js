@@ -49,13 +49,13 @@ export async function convertPdftoppt(req, res) {
       responseType: 'stream',
     });
 
-    const outputFilePath = path.join(process.cwd(), 'final-output', 'output.pptx');
+    const outputFilePath = path.join(process.cwd(), 'final-output', 'convertedppt.pptx');
     const writer = fs.createWriteStream(outputFilePath);
     downloadStream.data.pipe(writer);
 
     res.status(200).json({
       message: "Converted PDF to PPTX succesfully.",
-      outputppt: `/final-output/output.pptx`,
+      outputppt: `/final-output/convertedppt.pptx`
     });
   } catch (err) {
     console.error('Error:', err.message);

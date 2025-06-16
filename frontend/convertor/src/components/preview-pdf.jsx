@@ -28,7 +28,7 @@ export default function Preview() {
   const loc = useLocation();
   const navigate = useNavigate();
 
-  const { proroute } = loc.state || {};
+  const { proroute} = loc.state || {};
   const routemap = {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
@@ -36,6 +36,7 @@ export default function Preview() {
     "PDF to PowerPoint": "PdftoPPT",
     "PDF to Word":"pdftoword"
   };
+
   let route = routemap[proroute]; //space gets encoded as %20 in url
   async function addmorefiles(event) {
     const files = catchfile(event.target.files);
@@ -62,8 +63,6 @@ export default function Preview() {
       );
 
       if (data) {
-        console.log(data);
-        
         let value = data.data;
         setTimeout(() => {
           setloader(false);

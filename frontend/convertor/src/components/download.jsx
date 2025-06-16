@@ -8,7 +8,7 @@ export default function Download() {
 
   let output = Object.values(value);//Array of values of the provided object
   let outputpath = output[1];
-  
+
   let filename = outputpath.split("/")[2];
   const navigate = useNavigate();
 
@@ -53,8 +53,8 @@ export default function Download() {
           >
             ⬇ Download PDF
           </button>
-
         </div>
+        <p className="text-white font-[Oswald] text-xl mt-3">Your files will be deleted from our server in 24 hours</p>
       </div>
     </>
   );

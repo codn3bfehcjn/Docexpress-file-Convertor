@@ -31,7 +31,7 @@ export default function Upload() {
   function catchTheFile(event) {
     const filesArray = catchfile(event.target.files);
     setfile(filesArray);
-  }
+  } 
 
   function dropHandler(event) {
     event.preventDefault();
@@ -61,7 +61,7 @@ export default function Upload() {
         setimagepath(imgpath);
 
         navigate("/preview", {
-          state: { proroute },
+          state: { proroute},
         });
       }
     }

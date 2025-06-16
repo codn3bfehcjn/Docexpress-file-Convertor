@@ -3,8 +3,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export async function mergepdf(req, res) {
+    let outputfilename = "";
     const { filepath } = req.body
-
     try {
         if (filepath.length == 0) {
             return res.status(400).json({ error: "Invalid file paths" });
@@ -23,9 +23,9 @@ export async function mergepdf(req, res) {
 
         res.status(200).json({
             message: "PDFs merged successfully.",
-            mergedpdfpath: `/final-output/merged.pdf` 
-          });
-          
+            mergedpdfpath: `/final-output/${outputfilename}.pdf`
+        });
+
     } catch (error) {
         console.error("Error during PDF merge:", error);
         res.status(500).json({ error: "PDF merge failed." });
