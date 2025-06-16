@@ -8,7 +8,7 @@ dotenv.config();
 const API_KEY = process.env.API_KEY;
 const ZAMZAR_BASE_URL = 'https://sandbox.zamzar.com/v1';
 
-export async function convertPdfToPptx(req, res) {
+export async function convertPdftoppt(req, res) {
   try {
     const { filepath } = req.body
     const inputfilepath = filepath[0];
@@ -34,7 +34,7 @@ export async function convertPdfToPptx(req, res) {
       });
       jobStatus = status.data.status;
       console.log(jobStatus);
-      
+
       if (jobStatus === 'failed') {
         throw new Error('Conversion failed on server.');
       }
@@ -53,7 +53,7 @@ export async function convertPdfToPptx(req, res) {
     const writer = fs.createWriteStream(outputFilePath);
     downloadStream.data.pipe(writer);
 
-    res.json({
+    res.status(200).json({
       message: "Converted PDF to PPTX succesfully.",
       outputppt: `/final-output/output.pptx`,
     });

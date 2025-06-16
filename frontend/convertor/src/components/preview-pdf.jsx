@@ -33,7 +33,8 @@ export default function Preview() {
     "Merge PDF": "merge",
     "Compress PDF": "compress",
     "Watermark": "watermark",
-    "PDF to PowerPoint": "PdftoPPT"
+    "PDF to PowerPoint": "PdftoPPT",
+    "PDF to Word":"pdftoword"
   };
   let route = routemap[proroute]; //space gets encoded as %20 in url
   async function addmorefiles(event) {
@@ -61,11 +62,13 @@ export default function Preview() {
       );
 
       if (data) {
+        console.log(data);
+        
         let value = data.data;
         setTimeout(() => {
           setloader(false);
           navigate("/download", { state: { value } });
-        }, 1200);
+        }, 1000);
       }
     } catch (error) {
       setloader(false);
@@ -81,7 +84,7 @@ export default function Preview() {
           htmlFor="add"
           className="w-44 flex justify-center items-center gap-2 bg-red-600 p-2  rounded-md cursor-pointer font-[Oswald] font-semibold h-[46px]  text-black hover:scale-105 transition duration-200 focus:outline-none"
         >
-          <span className="font-medium text-white">Add More Files</span>
+          <span className="font-medium text-white text-[19px]">Add More Files</span>
           <input
             type="file"
             id="add"
@@ -95,7 +98,7 @@ export default function Preview() {
 
         <button
           onClick={process}
-          className="h-[46px] px-6 py-2 bg-red-600 text-white font-medium font-[Oswald] rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2focus:ring-red-400 w-44 hover:scale-105 cursor-pointer"
+          className="h-[46px] px-6 py-2 bg-red-600 text-white font-medium font-[Oswald] rounded-md shadow-lg transition duration-300 focus:outline-none focus:ring-2focus:ring-red-400 w-44 hover:scale-105 cursor-pointer text-[19px]"
         >
           {proroute}
         </button>
@@ -106,8 +109,8 @@ export default function Preview() {
       <Imagepreview></Imagepreview>
       {load ? (
         <div className=" top-[65px] fixed inset-0  bg-white dark:bg-gray-800 bg-opacity-50 z-50 flex justify-center items-center text-white">
-          <p className="text-gray-700 dark:text-white font-[Oswald] text-2xl">🧰 Calling the PDF wizards for some magic..</p>
-          <div className=" w-16 h-16 border-8 border-white border-t-red-500 rounded-full animate-spin"></div>
+          <p className="text-gray-700 dark:text-white font-[Oswald] text-2xl">Calling the PDF wizards for some magic..</p>
+          <div className=" w-16 h-16 border-8 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
         </div>
       ) : null}
     </main>

@@ -21,7 +21,7 @@ export async function mergepdf(req, res) {
         const finalmergedpdf = await mergedpdf.save();
         await fs.writeFile(outputPath, finalmergedpdf);
 
-        res.json({
+        res.status(200).json({
             message: "PDFs merged successfully.",
             mergedpdfpath: `/final-output/merged.pdf` 
           });

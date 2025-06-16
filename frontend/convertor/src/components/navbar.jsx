@@ -52,7 +52,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="font-[Oswald] font-bold flex items-center space-x-4">
+      <div className="font-[Oswald] font-bold flex items-center space-x-0 md:space-x-3">
         <button onClick={toggleTheme} className="cursor-pointer">
           {theme === "light" ? (
             <span className="material-symbols-outlined text-yellow-500 hover:bg-gray-200 rounded-xl p-2 transition">
@@ -64,7 +64,7 @@ export default function Navbar() {
             </span>
           )}
         </button>
-        <span className="cursor-pointer">
+        <span className="cursor-pointer hover:bg-gray-200 rounded-xl p-2 transition dark:hover:bg-gray-600">
           <i className="fa-solid fa-circle-user fa-xl"></i>
         </span>
       </div>

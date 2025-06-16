@@ -52,7 +52,7 @@ export default function Customize({ proroute,setopen,open,fontsize,setfontsize,c
                     <div className="relative inline-block mt-4" ref={modalref}>
                         <button
                             onClick={togglesetting}
-                            className="flex items-center gap-1 text-red-600 dark:text-red-400 transition-colors text-base font-medium cursor-pointer"
+                            className="flex items-center gap-1 text-red-600 dark:text-white transition-colors text-base font-medium cursor-pointer"
                         >
                             <span className="material-symbols-outlined text-2xl">add_circle</span>
                             <span>Customize</span>

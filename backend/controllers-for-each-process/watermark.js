@@ -55,7 +55,7 @@ export async function watermark(req, res) {
         }
         const bytes = await pdf.save();
         await fs.writeFile(savepath, bytes);
-        res.json({
+        res.status(200).json({
             message: "Watermark added to PDF successfully.",
             watermarkedpdf: `/final-output/watermark.pdf`,
         });

@@ -10,7 +10,7 @@ import Download from "./download";
 export default function Home() {
     return (
         <BrowserRouter>
-            <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+            <div className="bg-linear-to-b from-gray-200 to-gray-300 dark:bg-linear-to-t dark:from-gray-800 dark:to-gray-700 min-h-screen">
                 <Navbar />
                 <Routes>
                     <Route
