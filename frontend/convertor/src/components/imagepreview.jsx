@@ -1,8 +1,9 @@
 import React from "react";
 import { useimagepathstore } from "../../store/imgpathstore";
 export default function Imagepreview() {
-      const path = useimagepathstore((state) => state.paths);
+    const path = useimagepathstore((state) => state.paths);
     return (
+
         <section className="flex justify-center flex-wrap gap-2 mb-3">
             {path.map((path, index) => (
                 <figure

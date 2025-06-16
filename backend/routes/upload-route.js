@@ -9,7 +9,6 @@ import { convertPdftoppt } from "../controllers-for-each-process/pdftoppt.js";
 import { convertPdftodocx } from "../controllers-for-each-process/pdftoword.js";
 
 const router = Router();
-
 const storage = diskStorage({
   destination: function (req, file, cb) {
     cb(null, "file-storage");
@@ -79,7 +78,7 @@ router.post("/upload", upload.array("files"), async (req, res) => {
   } catch (error) {
     console.error("Upload error:", error);
     res.status(500).json({ error: "File processing failed." });
-  }
+  } 
 });
 
 router.post("/merge", mergepdf);
