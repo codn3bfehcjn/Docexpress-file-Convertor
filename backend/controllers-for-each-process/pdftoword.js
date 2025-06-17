@@ -15,7 +15,6 @@ export const convertPdftodocx = async (req, res) => {
 
     const pdfpath = path.resolve(filepath[0]);
     const outputdir = path.join(process.cwd(), "final-output", `convertedword.docx`); //output-directory
-    // const wordfilepath = path.join(outputDir, "converted.docx");//file in output directory
     const scriptpath = path.join(__dirname, "./pdftoword.py");
 
     execFile("python", [scriptpath, pdfpath, outputdir], (error, stderr) => {
