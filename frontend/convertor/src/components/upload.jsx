@@ -22,15 +22,15 @@ export default function Upload() {
 
   // catch files from input field
   function catchTheFile(event) {
-    const filesArray = catchfile(event.target.files);
-    setfile(filesArray);
+    const filesarray = catchfile(event.target.files);
+    setfile(filesarray);
   } 
 
   function dropHandler(event) {
     event.preventDefault();
     setDrag(false);
-    const filesArray = Array.from(event.dataTransfer.files); //files from drag and drop
-    setfile(filesArray);
+    const filesarray = Array.from(event.dataTransfer.files); //files from drag and drop
+    setfile(filesarray);
   }
 
   function dragOverHandler(event) {
