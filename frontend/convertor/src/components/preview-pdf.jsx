@@ -34,7 +34,8 @@ export default function Preview() {
     "Compress PDF": "compress",
     "Watermark": "watermark",
     "PDF to PowerPoint": "PdftoPPT",
-    "PDF to Word":"pdftoword"
+    "PDF to Word":"pdftoword",
+    "Protect PDF":"protectpdf"
   };
 
   let route = routemap[proroute]; //space gets encoded as %20 in url

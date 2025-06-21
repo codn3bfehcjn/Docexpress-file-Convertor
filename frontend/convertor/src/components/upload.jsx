@@ -17,15 +17,8 @@ export default function Upload() {
   const clearimagepath = useimagepathstore((state) => state.clearimagepath);
   const [drag, setDrag] = useState(false);
   const [proroute, setproroute] = useState("");
-  const [flag, setflag] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    clearimagepath();
-    clearfilepath();
-    setfile([])
-    setflag(true)
-  }, []);
 
   // catch files from input field
   function catchTheFile(event) {
@@ -65,7 +58,6 @@ export default function Upload() {
         });
       }
     }
-    if (!flag) return;
     if (file && file.length > 0) {
       uploadFiles();
     }

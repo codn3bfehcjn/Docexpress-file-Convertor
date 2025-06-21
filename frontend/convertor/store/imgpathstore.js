@@ -13,7 +13,7 @@ export const useimagepathstore = create(
       clearimagepath: () => set({ paths: [] }),
     }),
     {
-      name: "image-paths-storage", // LocalStorage key
+      name: "image-paths", // LocalStorage key
     }
   )
 );

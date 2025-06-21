@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { usefilestore } from "../../store/filestore";
+import { usefilepathstore } from "../../store/filepathstore";
+import { useimagepathstore } from "../../store/imgpathstore";
 
 export default function Download() {
   const location = useLocation();
+  const [flag, setflag] = useState(false)
   const { value } = location.state;
+  const setfile = usefilestore((state) => state.setfile);
+  const clearfilepath = usefilepathstore((state) => state.clearfilepath);
+  const clearimagepath = useimagepathstore((state) => state.clearimagepath);
 
   let output = Object.values(value);//Array of values of the provided object
   let outputpath = output[1];
@@ -29,12 +36,20 @@ export default function Download() {
       window.URL.revokeObjectURL(url);
       if (response) {
         navigate('/')
+        setflag(true)
       }
     } catch (error) {
       console.error("Download failed:", error.message);
     }
   }
 
+  useEffect(() => {
+    if (flag) {
+      setfile([])
+      clearfilepath()
+      clearimagepath()
+    }
+  }, [flag])
   return (
     <>
       <div className="flex flex-col justify-center items-center px-4 mt-24" >

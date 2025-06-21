@@ -12,7 +12,7 @@ export const usefilepathstore = create(
       clearfilepath: () => set({ filepaths: [] }),
     }),
     {
-      name: "pdf-filepaths",
+      name: "pdf-paths",
     }
   )
 );

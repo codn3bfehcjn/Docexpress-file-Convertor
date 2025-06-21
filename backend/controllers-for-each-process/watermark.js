@@ -6,7 +6,7 @@ import fontkit from '@pdf-lib/fontkit'
 export async function watermark(req, res) {
     try {
         const { filepath, fontsize, color: { red, green, blue }, text, font } = req.body;
-        const savepath = path.join(process.cwd(), 'final-output', 'watermark.pdf');
+        const savepath = path.join(process.cwd(), 'final-output', 'Watermark.pdf');
         let element = filepath[0];
         let read = await fs.readFile(element)
         const pdf = await PDFDocument.load(read);
@@ -57,11 +57,11 @@ export async function watermark(req, res) {
         await fs.writeFile(savepath, bytes);
         res.status(200).json({
             message: "Watermark added to PDF successfully.",
-            watermarkedpdf: `/final-output/watermark.pdf`,
+            watermarkedpdf: `/final-output/Watermark.pdf`,
         });
     }
     catch (error) {
         console.log(error.message);
-        res.status(500).json({ error: "Adding watermark to PDF failed." });
+        res.status(500).json({ error: "Adding Watermark to PDF failed." });
     }
 } 

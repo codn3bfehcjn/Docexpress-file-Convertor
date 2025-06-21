@@ -7,6 +7,7 @@ import { mergepdf } from "../controllers-for-each-process/mergepdf.js";
 import { watermark } from "../controllers-for-each-process/watermark.js";
 import { convertPdftoppt } from "../controllers-for-each-process/pdftoppt.js";
 import { convertPdftodocx } from "../controllers-for-each-process/pdftoword.js";
+import { Encryptpdf } from "../controllers-for-each-process/encryptpdf.js";
 
 const router = Router();
 const storage = diskStorage({
@@ -85,5 +86,6 @@ router.post("/merge", mergepdf);
 router.post("/watermark",watermark );
 router.post("/pdftoppt",convertPdftoppt);
 router.post("/pdftoword",convertPdftodocx)
+router.post("/protectpdf",Encryptpdf)
 
 export default router;
