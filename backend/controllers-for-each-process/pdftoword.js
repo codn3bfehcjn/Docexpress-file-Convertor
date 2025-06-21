@@ -2,8 +2,7 @@ import { execFile } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);//import.meta.url-gives absoloute url of the current file
-//fileURLToPath-gives file url to file path with proper adjustments for (/,%)
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const convertPdftodocx = async (req, res) => {
   try {
@@ -17,7 +16,7 @@ export const convertPdftodocx = async (req, res) => {
     const outputdir = path.join(process.cwd(), "final-output", `convertedword.docx`); //output-directory
     const scriptpath = path.join(__dirname, "./pdftoword.py");
 
-    execFile("python", [scriptpath, pdfpath, outputdir], (error, stderr) => {
+    execFile("py", [scriptpath, pdfpath, outputdir], (error, stderr) => {
       if (error) {
         console.error("Python error:", stderr);
         return res.status(500).json({ error: "Conversion failed", details: stderr });
